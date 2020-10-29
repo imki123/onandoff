@@ -190,6 +190,7 @@ html,body {
   margin-right: 5px;
 }
 .clientsLength {
+  white-space: nowrap;
   background: white;
   border: none;
   padding: 7px;
