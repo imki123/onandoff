@@ -48,7 +48,10 @@ function openRename() {
   const $renameBack = document.querySelector(".renameBack")
   if ($renameBack) $renameBack.style.display = "flex"
   const $renameInput = document.querySelector(".rename input")
-  if ($renameInput) $renameInput.value = me
+  if ($renameInput) {
+    $renameInput.value = me
+    $renameInput.focus()
+  }
 }
 //닉네임 변경 창 닫기
 function closeRename() {
