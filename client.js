@@ -8,7 +8,7 @@ let me = "guest"
 
 function clickUsage() {
   alert(
-    `1. 🔲버튼을 눌러서 ON / OFF를 변경해보세요.\n2. 불이 켜져 있을 때는 버튼을 모두 OFF로 바꿔야합니다.\n3. 불이 꺼져 있을 때는 버튼을 모두 ON으로 바꿔야합니다.\n4. 😅최근 성공했다면 점수가 올라가지 않아요. 다른 분이 성공한 후에 다시 시도해주세요!\n5. 🎉높은 점수를 얻어서 랭킹을 올려보세요!!`
+    `1. 닉네임을 변경해보세요.\n2. 🔲버튼을 눌러서 ON / OFF를 변경해보세요.\n3. 불이 켜져 있을 때는 버튼을 모두 OFF로 바꿔야합니다.\n4. 불이 꺼져 있을 때는 버튼을 모두 ON으로 바꿔야합니다.\n5. 😅최근 성공했다면 점수가 올라가지 않아요. 다른 분이 성공한 후에 다시 시도해주세요!\n6. 🎉높은 점수를 얻어서 랭킹을 올려보세요!!`
   )
 }
 
@@ -24,6 +24,7 @@ function clickButton(button) {
   }
 }
 
+//채팅 전송
 function send() {
   let msg = document.querySelector("#chat")
   if (msg.value.trim() === "") return
@@ -64,7 +65,7 @@ function setRename() {
   }
   closeRename()
 
-  //쿠키 설정하기
+  //닉네임 바꾸면 쿠키 설정하기
   fetch(url + "/setCookie", {
     method: "POST",
     mode: "cors",
@@ -81,13 +82,8 @@ function checkEnter(event) {
   }
 }
 
-window.onload = function () {
-  const $game = document.querySelector(".game")
-  const $msgs = document.querySelector(".msgs")
-  const $clientLength = document.querySelector(".clientsLength")
-  const $allClientsList = document.querySelector(".allClientsList")
-
-  //접속하면 쿠키 체크하기. client 있으면 socket.emit("rename", me)
+//쿠키 체크하기. 쿠키 있으면 닉네임 변경.
+function checkCookie(){
   fetch(url + "/getCookie", {
     method: "POST",
     mode: "cors",
@@ -103,6 +99,14 @@ window.onload = function () {
       }
     })
   })
+}
+
+window.onload = function () {
+  const $game = document.querySelector(".game")
+  const $msgs = document.querySelector(".msgs")
+  const $clientLength = document.querySelector(".clientsLength")
+  const $allClientsList = document.querySelector(".allClientsList")
+
 
   //닉네임 변경하면 변경된 닉네임 보여주기
   socket.on("rename", ({ client, isMe }) => {
@@ -132,6 +136,8 @@ window.onload = function () {
     $msgs.append(div)
     //맨 아래로 스크롤하기
     $msgs.scrollTop = $msgs.scrollHeight + $msgs.offsetHeight
+    //접속하면 쿠키 체크하기. client 있으면 socket.emit("rename", me)
+    checkCookie()
   })
 
   //버튼 배열 받기
@@ -260,4 +266,5 @@ window.onload = function () {
     //맨 아래로 스크롤하기
     $msgs.scrollTop = $msgs.scrollHeight + $msgs.offsetHeight
   })
+  
 }
