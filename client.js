@@ -1,7 +1,7 @@
 //connection event
 
 let url = "https://socket-imki123.herokuapp.com"
-url = "http://192.168.0.4:4000"
+//url = "http://192.168.0.4:4000"
 let socket = io(url) //default: window.location
 let allClients = []
 let me = "guest"
