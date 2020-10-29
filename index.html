@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#000000" />
+		<link rel="stylesheet" type="text/css" href="index.css" />
+		<title>OnAndOff-imki123</title>
+	</head>
+	<body>
+		<div class="bodyWrapper">
+			<div class="board">
+				<div class="boardContent">
+					<div class="recent">
+						<div class="boardTitle">최근 성공</div>
+						<div class="boardList"></div>
+					</div>
+					<div class="week">
+						<div class="boardTitle">일주일 랭킹</div>
+						<div class="boardList"></div>
+					</div>
+					<div class="month">
+						<div class="boardTitle">한달 랭킹</div>
+						<div class="boardList"></div>
+					</div>
+				</div>
+			</div>
+
+			<div class="game">
+				<div class="usage">
+					<button onclick="clickUsage()">게임방법</button>
+				</div>
+				<div class="buttons">
+					<button onclick="clickButton(this)" id="button_1">ON</button>
+					<button onclick="clickButton(this)" id="button_2">ON</button>
+					<button onclick="clickButton(this)" id="button_3">ON</button>
+					<button onclick="clickButton(this)" id="button_4">ON</button>
+					<button onclick="clickButton(this)" id="button_5">ON</button>
+					<button onclick="clickButton(this)" id="button_6">ON</button>
+					<button onclick="clickButton(this)" id="button_7">ON</button>
+					<button onclick="clickButton(this)" id="button_8">ON</button>
+					<button onclick="clickButton(this)" id="button_9">ON</button>
+					<button onclick="clickButton(this)" id="button_10">ON</button>
+				</div>
+			</div>
+			<div class="chat">
+				<div class="msgs"></div>
+				<div class="inputs">
+					<div class="client">guest</div>
+					<input id="chat" autocomplete="off" onkeypress="sendOnEnter(event)" placeholder="대화해보세요 :D" />
+					<div class="clientsLength hover no-drag" onclick="toggleClients()">0명</div>
+					<button onclick="send()">Send</button>
+				</div>
+				<div class="allClientsWrapper" onclick="toggleClients()">
+					<div class="allClients">
+						<div>접속자 목록</div>
+						<div class="allClientsList"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- socket.io CDN -->
+		<script src="https://cdn.jsdelivr.net/npm/socket.io-client@2/dist/socket.io.js"></script>
+		<!-- <script src="/socket.io/socket.io.js"></script> -->
+		<script src="client.js"></script>
+	</body>
+</html>

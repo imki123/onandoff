@@ -1,0 +1,232 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+button,
+img,
+.no-drag {
+  -ms-user-select: none;
+  -moz-user-select: -moz-none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;
+}
+button {
+  cursor: pointer;
+}
+.hover:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+html,body {
+  height: 100%;
+  width: 100%;
+  font: 0.9rem Helvetica, Arial;
+}
+
+.bodyWrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  flex-direction: column;
+  border: 1px solid black;
+  max-width: 1000px;
+  min-width: 300px;
+}
+.board {
+  width: 100%;
+}
+.boardContent {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  text-align: left;
+
+  width: 100%;
+}
+.boardContent > * {
+  width: 34%;
+  overflow: auto;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+}
+.boardContent div:nth-child(3) {
+  border-right: 0;
+}
+.boardTitle {
+  font-weight: bold;
+  font-size: 1rem;
+  padding: 2px;
+  text-align: center;
+  background: rgb(168, 255, 168);
+  white-space: nowrap;
+  overflow: hidden;
+}
+.boardList{
+  font-size: 0.8rem;
+  height: 80px;
+  overflow: auto;
+}
+.boardList div {
+  width: 100%;
+  padding: 0px 5px;
+
+  display: flex;
+  justify-content: space-between;
+}
+.boardList div span:nth-child(1) {
+  white-space: nowrap;
+  overflow: hidden;
+}
+.boardList div span:nth-child(2) {
+  padding: 0 2px;
+}
+
+.game {
+  width: 100%;
+  height: calc(40% - 1px);
+  background: yellow;
+  border-bottom: 1px solid black;
+  overflow: auto;
+}
+.usage {
+  width: 100%;
+  text-align: center;
+}
+.usage button {
+  background: blue;
+  color: white;
+  height: 30px;
+  width: 80px;
+  border-radius: 10px;
+  outline: none;
+}
+.buttons {
+  height: calc(100% - 30px);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+.buttons button {
+  width: 80px;
+  padding: 20px 10px;
+  margin: 1px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  background: white;
+  color: black;
+  border-radius: 20px;
+  outline: none;
+}
+.buttons button.off {
+  background: black;
+  color: white;
+}
+
+.chat {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
+  width: 100%;
+  height: calc(60% - 103px);
+}
+.msgs > * {
+  padding: 5px 10px;
+  width: 100%;
+}
+.msgs {
+  max-height: calc(100% - 40px);
+  width: 100%;
+  list-style-type: none;
+  overflow-y: auto;
+}
+.msgs .date {
+  background: #eee;
+}
+.msgs .connect {
+  background: #ffff78;
+}
+.msgs .disconnect {
+  background: #ffffd0;
+}
+.msgs .time {
+  color: gray;
+  font-size: 0.7rem;
+}
+
+.inputs {
+  background: #000;
+  padding: 3px;
+  height: 40px;
+  width: 100%;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.inputs > * {
+  height: 33px;
+}
+.client {
+  background: white;
+  padding: 8px;
+  margin-right: 5px;
+}
+input {
+  border: 0;
+  padding: 9px;
+  width: 100%;
+  margin-right: 5px;
+}
+.clientsLength {
+  background: white;
+  border: none;
+  padding: 7px;
+  margin-right: 5px;
+  min-width: 40px;
+  text-align: right;
+}
+.chat button {
+  background: rgb(130, 224, 255);
+  border: none;
+  padding: 9px;
+}
+.allClientsWrapper {
+  position: absolute;
+  bottom: 40px;
+  right: 0px;
+  z-index: 10;
+  display: none;
+
+  width: 100%;
+  height: calc(100vh - 40px);
+  background: rgb(214, 214, 214, 0.5);
+}
+.allClientsWrapper.view {
+  display: block;
+}
+.allClients {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+
+  padding: 10px;
+  width: 200px;
+  height: calc(50vh - 40px);
+  border: 1px solid black;
+  background: white;
+  overflow: auto;
+}
+
+.allClientsList {
+  margin-top: 10px;
+}
