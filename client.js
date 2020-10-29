@@ -1,8 +1,9 @@
 //connection event
 let url = "https://socket-imki123.herokuapp.com"
-//url = "http://localhost:4000"
+url = "http://localhost:4000"
 let socket = io(url) //default: window.location
 let allClients = []
+let me = "guest"
 
 function clickUsage() {
   alert(
@@ -40,11 +41,43 @@ function toggleClients() {
   else $allClientsWrapper.classList.add("view")
 }
 
+//닉네임 변경하기(로그인)
+
+
+function openRename(){
+  const $renameBack = document.querySelector('.renameBack')
+  if($renameBack) $renameBack.style.display = 'flex'
+  const $renameInput = document.querySelector('.rename input')
+  if($renameInput) $renameInput.value = me
+}
+//닉네임 변경 창 닫기
+function closeRename(){
+  const $renameBack = document.querySelector('.renameBack')
+  if($renameBack) $renameBack.style.display = 'none'
+}
+function setRename(){
+  const $renameInput = document.querySelector('.rename input')
+  if($renameInput.value.trim() !== ''){
+    me = $renameInput.value.trim()
+    const $client = document.querySelector('.client')
+    $client.innerHTML = me
+  }
+  closeRename()
+}
+//엔터 체크하기
+function checkEnter(event){
+  if(event.key === 'Enter'){
+    setRename()
+  }
+}
+
 window.onload = function () {
   const $game = document.querySelector(".game")
   const $msgs = document.querySelector(".msgs")
   const $clientLength = document.querySelector(".clientsLength")
   const $allClientsList = document.querySelector(".allClientsList")
+  
+  
 
   //버튼 배열 받기
   socket.on("buttons", ({ buttons, recents, weeks, months, winner }) => {
@@ -148,6 +181,7 @@ window.onload = function () {
     const $client = document.querySelector(".client")
     div.classList.add("connect")
     if (isMe) {
+      me = client
       div.innerHTML = `${client}님 환영합니다 :D`
       $client.innerHTML = client
     } else div.innerHTML = `${client}님이 접속했습니다.`
