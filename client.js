@@ -1,6 +1,7 @@
 //connection event
+
 let url = "https://socket-imki123.herokuapp.com"
-url = "http://localhost:4000"
+url = "http://192.168.0.4:4000"
 let socket = io(url) //default: window.location
 let allClients = []
 let me = "guest"
@@ -41,32 +42,41 @@ function toggleClients() {
   else $allClientsWrapper.classList.add("view")
 }
 
-//닉네임 변경하기(로그인)
-
-
-function openRename(){
-  const $renameBack = document.querySelector('.renameBack')
-  if($renameBack) $renameBack.style.display = 'flex'
-  const $renameInput = document.querySelector('.rename input')
-  if($renameInput) $renameInput.value = me
+//닉네임 변경 창 열기
+function openRename() {
+  const $renameBack = document.querySelector(".renameBack")
+  if ($renameBack) $renameBack.style.display = "flex"
+  const $renameInput = document.querySelector(".rename input")
+  if ($renameInput) $renameInput.value = me
 }
 //닉네임 변경 창 닫기
-function closeRename(){
-  const $renameBack = document.querySelector('.renameBack')
-  if($renameBack) $renameBack.style.display = 'none'
+function closeRename() {
+  const $renameBack = document.querySelector(".renameBack")
+  if ($renameBack) $renameBack.style.display = "none"
 }
-function setRename(){
-  const $renameInput = document.querySelector('.rename input')
-  if($renameInput.value.trim() !== ''){
+//닉네임 변경하기. client있으면 me = client
+function setRename() {
+  const $renameInput = document.querySelector(".rename input")
+  if ($renameInput.value.trim() !== "") {
     me = $renameInput.value.trim()
-    const $client = document.querySelector('.client')
+    const $client = document.querySelector(".client")
     $client.innerHTML = me
   }
   closeRename()
+
+  //쿠키 설정하기
+  fetch(url + "/setCookie", {
+    method: "POST",
+    mode: "cors",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ client: me }),
+  })
+  socket.emit("rename", me)
 }
 //엔터 체크하기
-function checkEnter(event){
-  if(event.key === 'Enter'){
+function checkEnter(event) {
+  if (event.key === "Enter") {
     setRename()
   }
 }
@@ -76,8 +86,53 @@ window.onload = function () {
   const $msgs = document.querySelector(".msgs")
   const $clientLength = document.querySelector(".clientsLength")
   const $allClientsList = document.querySelector(".allClientsList")
-  
-  
+
+  //접속하면 쿠키 체크하기. client 있으면 socket.emit("rename", me)
+  fetch(url + "/getCookie", {
+    method: "POST",
+    mode: "cors",
+    credentials: "include",
+  })
+  .then(res => {
+    //console.log(res)
+    res.json().then(res=>{
+      if(res.client){
+          const $client = document.querySelector(".client")
+          $client.innerHTML = res.client
+        socket.emit("rename", res.client)
+      }
+    })
+  })
+
+  //닉네임 변경하면 변경된 닉네임 보여주기
+  socket.on("rename", ({ client, isMe }) => {
+    const div = document.createElement("div")
+    const $client = document.querySelector(".client")
+    div.classList.add("connect")
+    if (isMe) {
+      me = client
+      div.innerHTML = `${client}으로 닉네임이 변경됐습니다 :D`
+      $client.innerHTML = client
+    } else div.innerHTML = `${client}님이 접속했습니다.`
+    $msgs.append(div)
+    //맨 아래로 스크롤하기
+    $msgs.scrollTop = $msgs.scrollHeight + $msgs.offsetHeight
+  })
+
+  //접속하면 접속한 사람 아이디 보여주기
+  socket.on("new connect", ({ client, isMe }) => {
+    const div = document.createElement("div")
+    const $client = document.querySelector(".client")
+    div.classList.add("connect")
+    if (isMe) {
+      me = client
+      div.innerHTML = `${client}님 환영합니다 :D`
+      $client.innerHTML = client
+    } else div.innerHTML = `${client}님이 접속했습니다.`
+    $msgs.append(div)
+    //맨 아래로 스크롤하기
+    $msgs.scrollTop = $msgs.scrollHeight + $msgs.offsetHeight
+  })
 
   //버튼 배열 받기
   socket.on("buttons", ({ buttons, recents, weeks, months, winner }) => {
@@ -171,21 +226,6 @@ window.onload = function () {
       } <span class="time">${i.time.substring(11)}</span>`
       $msgs.append(div)
     }
-    //맨 아래로 스크롤하기
-    $msgs.scrollTop = $msgs.scrollHeight + $msgs.offsetHeight
-  })
-
-  //접속하면 접속한 사람 아이디 보여주기
-  socket.on("new connect", ({ client, isMe }) => {
-    const div = document.createElement("div")
-    const $client = document.querySelector(".client")
-    div.classList.add("connect")
-    if (isMe) {
-      me = client
-      div.innerHTML = `${client}님 환영합니다 :D`
-      $client.innerHTML = client
-    } else div.innerHTML = `${client}님이 접속했습니다.`
-    $msgs.append(div)
     //맨 아래로 스크롤하기
     $msgs.scrollTop = $msgs.scrollHeight + $msgs.offsetHeight
   })
