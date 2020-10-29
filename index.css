@@ -233,6 +233,9 @@ html,body {
 .allClientsList {
   margin-top: 10px;
 }
+.clientList{
+  margin: 5px;
+}
 
 
 .renameBack{

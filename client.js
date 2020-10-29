@@ -210,7 +210,7 @@ window.onload = function () {
     $allClientsList.innerHTML = ""
     for (let i of allClients) {
       const div = document.createElement("div")
-      div.classList.add("client")
+      div.classList.add("clientList")
       div.innerHTML = `${i}`
       $allClientsList.append(div)
     }
