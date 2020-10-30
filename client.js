@@ -1,14 +1,14 @@
 //connection event
 
 let url = "https://socket-imki123.herokuapp.com"
-//url = "http://192.168.0.4:4000"
+//url = "http://192.168.0.4:4000" //로컬에서 테스트할 때
 let socket = io(url) //default: window.location
 let allClients = []
 let me = "guest"
 
 function clickUsage() {
   alert(
-    `1. 닉네임을 변경해보세요.\n2. 🔲버튼을 눌러서 ON / OFF를 변경해보세요.\n3. 불이 켜져 있을 때는 버튼을 모두 OFF로 바꿔야합니다.\n4. 불이 꺼져 있을 때는 버튼을 모두 ON으로 바꿔야합니다.\n5. 😅최근 성공했다면 점수가 올라가지 않아요. 다른 분이 성공한 후에 다시 시도해주세요!\n6. 🎉높은 점수를 얻어서 랭킹을 올려보세요!!`
+    `1. 📛닉네임을 변경해보세요.\n2. 🔲버튼을 눌러서 ON / OFF를 변경해보세요.\n3. 💡불이 켜져 있을 때는 버튼을 모두 OFF로 바꿔야합니다.\n4. 🌙불이 꺼져 있을 때는 버튼을 모두 ON으로 바꿔야합니다.\n5. 🎉높은 점수를 얻어서 랭킹을 올려보세요!!\n(불건전한 대화 시 차단 될 수 있어요.😅)`
   )
 }
 
@@ -86,18 +86,17 @@ function checkEnter(event) {
 }
 
 //쿠키 체크하기. 쿠키 있으면 닉네임 변경.
-function checkCookie(){
+function checkCookie() {
   fetch(url + "/getCookie", {
     method: "POST",
     mode: "cors",
     credentials: "include",
-  })
-  .then(res => {
+  }).then((res) => {
     //console.log(res)
-    res.json().then(res=>{
-      if(res.client){
-          const $client = document.querySelector(".client")
-          $client.innerHTML = res.client
+    res.json().then((res) => {
+      if (res.client) {
+        const $client = document.querySelector(".client")
+        $client.innerHTML = res.client
         socket.emit("rename", res.client)
       }
     })
@@ -109,7 +108,6 @@ window.onload = function () {
   const $msgs = document.querySelector(".msgs")
   const $clientLength = document.querySelector(".clientsLength")
   const $allClientsList = document.querySelector(".allClientsList")
-
 
   //닉네임 변경하면 변경된 닉네임 보여주기
   socket.on("rename", ({ client, isMe }) => {
@@ -147,6 +145,9 @@ window.onload = function () {
   socket.on("buttons", ({ buttons, recents, weeks, months, winner }) => {
     //배경색 바꾸기
     $game.style.background = buttons[0]
+    if (buttons[0] === "yellow")
+      document.querySelector(".light").innerHTML = "💡"
+    else document.querySelector(".light").innerHTML = "🌙"
     //버튼 바꾸기
     for (let i = 1; i < buttons.length; i++) {
       button = document.querySelector(`#button_${i}`)
@@ -269,5 +270,4 @@ window.onload = function () {
     //맨 아래로 스크롤하기
     $msgs.scrollTop = $msgs.scrollHeight + $msgs.offsetHeight
   })
-  
 }

@@ -90,11 +90,19 @@ html,body {
 }
 
 .game {
+  position: relative;
   width: 100%;
   height: calc(40% - 1px);
   background: yellow;
   border-bottom: 1px solid black;
   overflow: auto;
+}
+.light{
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 10px;
+  font-size: 30px;
 }
 .usage {
   width: 100%;
