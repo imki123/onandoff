@@ -130,14 +130,18 @@ window.onload = function () {
     const $client = document.querySelector(".client")
     div.classList.add("connect")
     if (isMe) {
-      //접속하면 쿠키 체크하기. client 있으면 socket.emit("rename", me)
+      //접속하면 쿠키 체크하기. client 있으면 쿠키 닉네임으로 전파
       if(!await checkCookie()){
+        //쿠키 없으면 현재 아이디로 전파
         me = client
         div.innerHTML = `${client}님 환영합니다 :D`
         $client.innerHTML = client
+        $msgs.append(div)
       }
-    } else div.innerHTML = `${client}님이 접속했습니다.`
-    $msgs.append(div)
+    } else {
+      div.innerHTML = `${client}님이 접속했습니다.`
+      $msgs.append(div)
+    }
     //맨 아래로 스크롤하기
     $msgs.scrollTop = $msgs.scrollHeight + $msgs.offsetHeight
   })
