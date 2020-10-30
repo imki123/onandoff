@@ -86,21 +86,21 @@ function checkEnter(event) {
 }
 
 //쿠키 체크하기. 쿠키 있으면 닉네임 변경.
-function checkCookie() {
-  fetch(url + "/getCookie", {
+async function checkCookie() {
+  let isCookie = false
+  let res = await fetch(url + "/getCookie", {
     method: "POST",
     mode: "cors",
     credentials: "include",
-  }).then((res) => {
-    //console.log(res)
-    res.json().then((res) => {
-      if (res.client) {
-        const $client = document.querySelector(".client")
-        $client.innerHTML = res.client
-        socket.emit("rename", res.client)
-      }
-    })
   })
+  res = await res.json()
+  if (res.client) {
+    const $client = document.querySelector(".client")
+    $client.innerHTML = res.client
+    socket.emit("rename", res.client)
+    return true
+  }
+  return false
 }
 
 window.onload = function () {
@@ -125,20 +125,21 @@ window.onload = function () {
   })
 
   //접속하면 접속한 사람 아이디 보여주기
-  socket.on("new connect", ({ client, isMe }) => {
+  socket.on("new connect", async ({ client, isMe }) => {
     const div = document.createElement("div")
     const $client = document.querySelector(".client")
     div.classList.add("connect")
     if (isMe) {
-      me = client
-      div.innerHTML = `${client}님 환영합니다 :D`
-      $client.innerHTML = client
+      //접속하면 쿠키 체크하기. client 있으면 socket.emit("rename", me)
+      if(!await checkCookie()){
+        me = client
+        div.innerHTML = `${client}님 환영합니다 :D`
+        $client.innerHTML = client
+      }
     } else div.innerHTML = `${client}님이 접속했습니다.`
     $msgs.append(div)
     //맨 아래로 스크롤하기
     $msgs.scrollTop = $msgs.scrollHeight + $msgs.offsetHeight
-    //접속하면 쿠키 체크하기. client 있으면 socket.emit("rename", me)
-    checkCookie()
   })
 
   //버튼 배열 받기
